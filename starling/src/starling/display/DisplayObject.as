@@ -348,13 +348,22 @@ package starling.display
             return mAlpha != 0.0 && mVisible && mScaleX != 0.0 && mScaleY != 0.0;
         }
         
-		
+        // helpers
+        
+        private function normalizeAngle(angle:Number):Number
+        {
+            // move into range [-180 deg, +180 deg]
+            while (angle < -Math.PI) angle += Math.PI * 2.0;
+            while (angle >  Math.PI) angle -= Math.PI * 2.0;
+            return angle;
+        }
+        
         // properties
  
         /** The transformation matrix of the object relative to its parent.
          *  If you assign a custom transformation matrix, Starling will figure out suitable values  
          *  for the corresponding orienation properties (<code>x, y, scaleX/Y, rotation</code> etc).
-         *  CAUTION: Returns not a copy, but the actual object! */
+         *  CAUTION: returns not a copy, but the actual object! */
         public function get transformationMatrix():Matrix
         {
             if (mOrientationChanged)
@@ -362,11 +371,19 @@ package starling.display
                 mOrientationChanged = false;
                 mTransformationMatrix.identity();
                 
-                if (mPivotX != 0.0 || mPivotY != 0.0) mTransformationMatrix.translate(-mPivotX, -mPivotY);
-                if (mScaleX != 1.0 || mScaleY != 1.0) mTransformationMatrix.scale(mScaleX, mScaleY);
                 if (mSkewX  != 0.0 || mSkewY  != 0.0) MatrixUtil.skew(mTransformationMatrix, mSkewX, mSkewY);
+                if (mScaleX != 1.0 || mScaleY != 1.0) mTransformationMatrix.scale(mScaleX, mScaleY);
                 if (mRotation != 0.0)                 mTransformationMatrix.rotate(mRotation);
                 if (mX != 0.0 || mY != 0.0)           mTransformationMatrix.translate(mX, mY);
+                
+                if (mPivotX != 0.0 || mPivotY != 0.0)
+                {
+                    // prepend pivot transformation
+                    mTransformationMatrix.tx = mX - mTransformationMatrix.a * mPivotX
+                                                  - mTransformationMatrix.c * mPivotY;
+                    mTransformationMatrix.ty = mY - mTransformationMatrix.b * mPivotX 
+                                                  - mTransformationMatrix.d * mPivotY;
+                }
             }
             
             return mTransformationMatrix; 
@@ -375,6 +392,7 @@ package starling.display
         public function set transformationMatrix(matrix:Matrix):void
         {
             mOrientationChanged = false;
+            mTransformationMatrix.copyFrom(matrix);
             mX = matrix.tx;
             mY = matrix.ty;
             
@@ -523,10 +541,12 @@ package starling.display
             }
         }
         
-        /** The horizontal skew angle in radians */
+        /** The horizontal skew angle in radians. */
         public function get skewX():Number { return mSkewX; }
         public function set skewX(value:Number):void 
         {
+            value = normalizeAngle(value);
+            
             if (mSkewX != value)
             {
                 mSkewX = value;
@@ -534,10 +554,12 @@ package starling.display
             }
         }
         
-        /** The vertical skew angle in radians */
+        /** The vertical skew angle in radians. */
         public function get skewY():Number { return mSkewY; }
         public function set skewY(value:Number):void 
         {
+            value = normalizeAngle(value);
+            
             if (mSkewY != value)
             {
                 mSkewY = value;
@@ -550,9 +572,7 @@ package starling.display
         public function get rotation():Number { return mRotation; }
         public function set rotation(value:Number):void 
         {
-            // move into range [-180 deg, +180 deg]
-            while (value < -Math.PI) value += Math.PI * 2.0;
-            while (value >  Math.PI) value -= Math.PI * 2.0;
+            value = normalizeAngle(value);
 
             if (mRotation != value)
             {            
