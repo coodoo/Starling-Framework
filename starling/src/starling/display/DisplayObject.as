@@ -348,6 +348,7 @@ package starling.display
             return mAlpha != 0.0 && mVisible && mScaleX != 0.0 && mScaleY != 0.0;
         }
         
+		
         // properties
  
         /** The transformation matrix of the object relative to its parent.
@@ -452,7 +453,12 @@ package starling.display
         }
         
         /** The x coordinate of the object relative to the local coordinates of the parent. */
-        public function get x():Number { return mX; }
+        public function get x():Number 
+		{
+			return mX; 
+		}
+		
+		
         public function set x(value:Number):void 
         { 
             if (mX != value)
@@ -461,7 +467,7 @@ package starling.display
                 mOrientationChanged = true;
             }
         }
-        
+		
         /** The y coordinate of the object relative to the local coordinates of the parent. */
         public function get y():Number { return mY; }
         public function set y(value:Number):void 

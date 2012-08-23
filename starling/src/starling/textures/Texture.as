@@ -23,6 +23,9 @@ package starling.textures
     import flash.utils.ByteArray;
     import flash.utils.getQualifiedClassName;
     
+    import jx.util.Mem;
+    import jx.util.Timing;
+    
     import starling.core.Starling;
     import starling.errors.AbstractClassError;
     import starling.errors.MissingContextError;
@@ -130,6 +133,9 @@ package starling.textures
             
             if (context == null) throw new MissingContextError();
             
+			//Timing.getInstance().start("建立 texture");
+			
+			//這個nativeTexture 是真正上傳 gpu 顯示用的
             var nativeTexture:flash.display3D.textures.Texture = context.createTexture(
                 legalWidth, legalHeight, Context3DTextureFormat.BGRA, optimizeForRenderTexture);
             
@@ -139,9 +145,14 @@ package starling.textures
                 potData.copyPixels(data, data.rect, new Point(0, 0));
                 data = potData;
             }
-            
+			
+			//Timing.getInstance().end("建立 texture");
+			
+            //Timing.getInstance().start("上傳texture");
             uploadBitmapData(nativeTexture, data, generateMipMaps);
+            //Timing.getInstance().end("上傳texture");
             
+			//這個 concreteTexture 是包過的，只是方便 starling 操作
             var concreteTexture:ConcreteTexture = new ConcreteTexture(
                 nativeTexture, Context3DTextureFormat.BGRA, legalWidth, legalHeight,
                 generateMipMaps, true, optimizeForRenderTexture, scale);

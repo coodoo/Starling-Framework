@@ -36,8 +36,8 @@ package starling.core
         /** Creates a new Statistics Box. */
         public function StatsDisplay()
         {
-            mBackground = new Quad(50, 25, 0x0);
-            mTextField = new TextField(48, 25, "", BitmapFont.MINI, BitmapFont.NATIVE_SIZE, 0xffffff);
+            mBackground = new Quad(50, 35, 0x0);
+            mTextField = new TextField(48, 35, "", BitmapFont.MINI, BitmapFont.NATIVE_SIZE, 0xffffff);
             mTextField.x = 2;
             mTextField.hAlign = HAlign.LEFT;
             mTextField.vAlign = VAlign.TOP;
@@ -54,6 +54,7 @@ package starling.core
         {
             mTextField.text = "FPS: " + fps.toFixed(fps < 100 ? 1 : 0) + 
                             "\nMEM: " + memory.toFixed(memory < 100 ? 1 : 0) +
+                            "\nPRI: " + (System.privateMemory * 0.000000954).toFixed(memory < 100 ? 1 : 0) +
                             "\nDRW: " + drawCount; 
         }
         

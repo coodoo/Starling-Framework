@@ -463,6 +463,9 @@ package starling.core
         {
             var stage:flash.display.Stage = event.target as flash.display.Stage; 
             mStage.dispatchEvent(new ResizeEvent(Event.RESIZE, stage.stageWidth, stage.stageHeight));
+			
+			if( mStatsDisplay )
+				doLayout();
         }
 
         private function onTouch(event:Event):void
@@ -644,20 +647,24 @@ package starling.core
                 {
                     mStatsDisplay = new StatsDisplay();
                     mStatsDisplay.touchable = false;
-                    mStatsDisplay.scaleX = mStatsDisplay.scaleY = 1.0 / contentScaleFactor;
+                    mStatsDisplay.scaleX = mStatsDisplay.scaleY = 2.5 / contentScaleFactor;
                     mStage.addChild(mStatsDisplay);
                 }
                 
                 var stageWidth:int  = mStage.stageWidth;
                 var stageHeight:int = mStage.stageHeight;
                 
-                if (hAlign == HAlign.LEFT) mStatsDisplay.x = 0;
-                else if (hAlign == HAlign.RIGHT) mStatsDisplay.x = stageWidth - mStatsDisplay.width; 
-                else mStatsDisplay.x = int((stageWidth - mStatsDisplay.width) / 2);
-                
-                if (vAlign == VAlign.TOP) mStatsDisplay.y = 0;
-                else if (vAlign == VAlign.BOTTOM) mStatsDisplay.y = stageHeight - mStatsDisplay.height;
-                else mStatsDisplay.y = int((stageHeight - mStatsDisplay.height) / 2);
+				//jx
+				this.hAlign = hAlign;
+				this.vAlign = vAlign;
+				doLayout();
+//                if (hAlign == HAlign.LEFT) mStatsDisplay.x = 0;
+//                else if (hAlign == HAlign.RIGHT) mStatsDisplay.x = stageWidth - mStatsDisplay.width; 
+//                else mStatsDisplay.x = int((stageWidth - mStatsDisplay.width) / 2);
+//                
+//                if (vAlign == VAlign.TOP) mStatsDisplay.y = 0;
+//                else if (vAlign == VAlign.BOTTOM) mStatsDisplay.y = stageHeight - mStatsDisplay.height;
+//                else mStatsDisplay.y = int((stageHeight - mStatsDisplay.height) / 2);
             }
             
             function onRootCreated():void
@@ -666,6 +673,26 @@ package starling.core
                 removeEventListener(starling.events.Event.ROOT_CREATED, onRootCreated);
             }
         }
+		
+		//jx
+		private var hAlign:String;
+		private var vAlign:String;
+		
+		
+		//jx
+		private function doLayout():void
+		{
+			var stageWidth:int  = mStage.stageWidth;
+			var stageHeight:int = mStage.stageHeight;
+			
+			if (hAlign == HAlign.LEFT) mStatsDisplay.x = 0;
+			else if (hAlign == HAlign.RIGHT) mStatsDisplay.x = stageWidth - mStatsDisplay.width; 
+			else mStatsDisplay.x = int((stageWidth - mStatsDisplay.width) / 2);
+			
+			if (vAlign == VAlign.TOP) mStatsDisplay.y = 0;
+			else if (vAlign == VAlign.BOTTOM) mStatsDisplay.y = stageHeight - mStatsDisplay.height;
+			else mStatsDisplay.y = int((stageHeight - mStatsDisplay.height) / 2);
+		}
         
         /** The Starling stage object, which is the root of the display tree that is rendered. */
         public function get stage():Stage

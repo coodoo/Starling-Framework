@@ -133,6 +133,7 @@ package starling.text
             super.render(support, parentAlpha);
         }
         
+		//重要：將內部包覆的 textfield 元件抓成圖像
         private function redrawContents():void
         {
             if (mIsRenderedText) createRenderedContents();
@@ -141,6 +142,7 @@ package starling.text
             mRequiresRedraw = false;
         }
         
+		//要從 textfield 裏抓取圖像
         private function createRenderedContents():void
         {
             if (mQuadBatch)
@@ -164,7 +166,7 @@ package starling.text
             sNativeTextField.selectable = false;            
             sNativeTextField.multiline = true;            
             sNativeTextField.wordWrap = true;            
-            sNativeTextField.text = mText;
+            sNativeTextField.text = mText;//把文字放入 tf 裏
             sNativeTextField.embedFonts = true;
             sNativeTextField.filters = mNativeFilters;
             
@@ -188,6 +190,7 @@ package starling.text
             else if (mVAlign == VAlign.CENTER) yOffset = (height - textHeight) / 2.0;
             else if (mVAlign == VAlign.BOTTOM) yOffset =  height - textHeight - 2;
             
+			//開始抓成圖像
             var bitmapData:BitmapData = new BitmapData(width, height, true, 0x0);
             bitmapData.draw(sNativeTextField, new Matrix(1, 0, 0, 1, 0, int(yOffset)-2));
             sNativeTextField.text = "";
@@ -197,8 +200,10 @@ package starling.text
             mTextBounds.setTo(xOffset   / scale, yOffset    / scale,
                               textWidth / scale, textHeight / scale);
             
+			//將抓好的圖像變成 texture
             var texture:Texture = Texture.fromBitmapData(bitmapData, false, false, scale);
             
+			//將 texture 放入 image 元件顯示出來
             if (mImage == null) 
             {
                 mImage = new Image(texture);
@@ -207,18 +212,20 @@ package starling.text
             }
             else 
             { 
+				//如果 image 元件已在，只要更新內部的 texture 即可
                 mImage.texture.dispose();
                 mImage.texture = texture; 
                 mImage.readjustSize(); 
             }
         }
         
+		//為了不讓 flash 文字框超出 starling.TextField 的邊界，要進行彈性縮放
         private function autoScaleNativeTextField(textField:flash.text.TextField):void
         {
             var size:Number   = Number(textField.defaultTextFormat.size);
             var maxHeight:int = textField.height - 4;
             var maxWidth:int  = textField.width - 4;
-            
+            //一直跑 loop 直到文字縮到夠小
             while (textField.textWidth > maxWidth || textField.textHeight > maxHeight)
             {
                 if (size <= 4) break;
@@ -228,7 +235,7 @@ package starling.text
                 textField.setTextFormat(format);
             }
         }
-        
+        //建 bitmap fonts - 因此叫 compose
         private function createComposedContents():void
         {
             if (mImage) 
@@ -401,6 +408,7 @@ package starling.text
                 mBorder = new Sprite();
                 addChild(mBorder);
                 
+				//它的文字邊框是用四條線畫出來的 - 其實應該可以用 graphics 畫好再抓成 bitmap
                 for (var i:int=0; i<4; ++i)
                     mBorder.addChild(new Quad(1.0, 1.0));
                 
