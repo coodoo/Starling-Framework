@@ -22,9 +22,6 @@ package starling.textures
     import flash.utils.ByteArray;
     import flash.utils.getQualifiedClassName;
     
-    import jx.util.Mem;
-    import jx.util.Timing;
-    
     import starling.core.Starling;
     import starling.errors.AbstractClassError;
     import starling.errors.MissingContextError;
@@ -194,27 +191,11 @@ package starling.textures
             return concreteTexture;
         }
         
-<<<<<<< HEAD
-        /** Creates a texture that contains a region (in pixels) of another texture. The new
-         *  texture will reference the base texture; no data is duplicated. */
-        public static function fromTexture(texture:starling.textures.Texture, region:Rectangle=null, frame:Rectangle=null):starling.textures.Texture
-        {
-            var subTexture:starling.textures.Texture = new SubTexture(texture, region);   
-            subTexture.mFrame = frame;
-            return subTexture;
-        }
-        
-        /** Creates an empty texture of a certain size and color. The color parameter
-         *  expects data in ARGB format. */
-        public static function empty(width:int=64, height:int=64, color:uint=0xffffffff,
-                                     optimizeForRenderTexture:Boolean=false, scale:Number=-1):starling.textures.Texture
-=======
         /** Creates an empty texture of a certain size and color. The color parameter
          *  expects data in ARGB format. */
         public static function fromColor(width:int, height:int, color:uint=0xffffffff,
                                          optimizeForRenderTexture:Boolean=false, 
                                          scale:Number=-1):Texture
->>>>>>> pull
         {
             if (scale <= 0) scale = Starling.contentScaleFactor;
             
