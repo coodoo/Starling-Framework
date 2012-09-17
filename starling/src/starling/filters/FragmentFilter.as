@@ -193,8 +193,11 @@ package starling.filters
             updatePassTextures(sBounds.width, sBounds.height, mResolution * scale);
             
             if (intoCache) 
-                cacheTexture = Texture.empty(sBounds.width, sBounds.height, PMA, true, 
+				//jx: asc 2.0 報錯，將 PMA 改成 1
+                cacheTexture = Texture.empty(sBounds.width, sBounds.height, 1, true, 
                                              mResolution * scale);
+//                cacheTexture = Texture.empty(sBounds.width, sBounds.height, PMA, true, 
+//                                             mResolution * scale);
             
             // draw the original object into a texture
             support.renderTarget = mPassTextures[0];
@@ -318,7 +321,9 @@ package starling.filters
                 }
                 
                 for (var i:int=0; i<numPassTextures; ++i)
-                    mPassTextures[i] = Texture.empty(width, height, PMA, true, scale);
+					//jx: asc 2.0, pma 改成 1
+                    mPassTextures[i] = Texture.empty(width, height, 1, true, scale);
+//                    mPassTextures[i] = Texture.empty(width, height, PMA, true, scale);
             }
         }
         
