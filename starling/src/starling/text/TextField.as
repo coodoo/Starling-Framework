@@ -158,8 +158,8 @@ package starling.text
             var textFormat:TextFormat = new TextFormat(mFontName, 
                 mFontSize * scale, mColor, mBold, mItalic, mUnderline, null, null, mHAlign);
             textFormat.kerning = mKerning;
-            
-            sNativeTextField.defaultTextFormat = textFormat;
+			
+			sNativeTextField.defaultTextFormat = textFormat;
             sNativeTextField.width = width;
             sNativeTextField.height = height;
             sNativeTextField.antiAliasType = AntiAliasType.ADVANCED;
@@ -169,11 +169,11 @@ package starling.text
             sNativeTextField.text = mText;//把文字放入 tf 裏
             sNativeTextField.embedFonts = true;
             sNativeTextField.filters = mNativeFilters;
-            
-            // we try embedded fonts first, non-embedded fonts are just a fallback
+
+			// we try embedded fonts first, non-embedded fonts are just a fallback
             if (sNativeTextField.textWidth == 0.0 || sNativeTextField.textHeight == 0.0)
                 sNativeTextField.embedFonts = false;
-            
+			
             if (mAutoScale)
                 autoScaleNativeTextField(sNativeTextField);
             
