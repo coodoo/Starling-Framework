@@ -82,7 +82,7 @@ package starling.textures
         protected function parseAtlasXml(atlasXml:XML):void
         {
             var scale:Number = mAtlasTexture.scale;
-            
+			
             for each (var subTexture:XML in atlasXml.SubTexture)
             {
                 var name:String        = subTexture.attribute("name");

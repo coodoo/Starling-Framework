@@ -329,7 +329,14 @@ package starling.textures
         public function get height():Number { return 0; }
 
         /** The scale factor, which influences width and height properties. */
-        public function get scale():Number { return 1.0; }
+        //public function get scale():Number { return 1.0; }
+		
+		//jx: 為了讓 texture atlas 圖可縮放
+        public function get scale():Number { return _scale; }
+		private var _scale:Number = 1.0;
+		public function set scale( value:Number ):void{ 
+			_scale = value; 
+		}
         
         /** The Stage3D texture object the texture is based on. */
         public function get base():TextureBase { return null; }

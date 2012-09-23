@@ -281,11 +281,13 @@ package starling.core
         
         // functions
         
-        private function initialize():void
+		//jx: 改成 public 由外界乎叫
+        public function initialize():void
         {
-            makeCurrent();
-            
-            initializeGraphicsAPI();
+			//jx: 中斷 Starling 原本的啟動流程，因為要等 Assets 載入適當的 TextureAtlas 圖檔
+            //makeCurrent();
+            //initializeGraphicsAPI();
+			
             initializeRoot();
             
             mTouchProcessor.simulateMultitouch = mSimulateMultitouch;
@@ -303,7 +305,8 @@ package starling.core
             trace("[Starling] Initialization complete.");
             trace("[Starling] Display Driver:", mContext.driverInfo);
             
-            dispatchEventWith(starling.events.Event.CONTEXT3D_CREATE, false, mContext);
+			//jx-removed
+            //dispatchEventWith(starling.events.Event.CONTEXT3D_CREATE, false, mContext);
         }
         
         private function initializeRoot():void
@@ -444,7 +447,12 @@ package starling.core
             }
             else
             {
-                initialize();
+				//jx: 修改後的 starling 啟動流程，下面兩個要先跑，建立相關的 starling 變數
+				makeCurrent();
+				initializeGraphicsAPI();
+				
+				//jx: 然後先廣播通知外界，讓它去啟動 Assets.createSubTextures()
+				dispatchEventWith(starling.events.Event.CONTEXT3D_CREATE, false, mContext);
             }
         }
         
