@@ -220,7 +220,22 @@ package starling.display
             mChildren.splice(oldIndex, 1);
             mChildren.splice(index, 0, child);
         }
-        
+		
+		/**
+		 * jxadded
+		 * 特別為 Group 所寫，因為它內部要確保 cornerAndShadowSkin 永遠在最上層，因此要操作 setChildIndex()
+		 * 但 Group 的 parent class - ScrollContainer 覆寫了所有 child 操作指令，改成操作 layotuViewPort
+		 * 因此要用特別的 namespace 改寫，才能直接操作到更上層的 children vector
+		 * 這裏我借用了 starling_internal 這個 namespace 
+		 */
+		starling_internal function internalSetChildIndex( child, index ):void
+		{
+			var oldIndex:int = mChildren.indexOf(child);
+			if (oldIndex == -1) throw new ArgumentError("Not a child of this container");
+			mChildren.splice(oldIndex, 1);
+			mChildren.splice(index, 0, child);
+		}
+		
         /** Swaps the indexes of two children. */
         public function swapChildren(child1:DisplayObject, child2:DisplayObject):void
         {
