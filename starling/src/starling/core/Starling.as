@@ -703,7 +703,7 @@ package starling.core
 			else mStatsDisplay.x = int((stageWidth - mStatsDisplay.width) / 2);
 			
 			if (vAlign == VAlign.TOP) mStatsDisplay.y = 0;
-			else if (vAlign == VAlign.BOTTOM) mStatsDisplay.y = stageHeight - mStatsDisplay.height - 120;	//20
+			else if (vAlign == VAlign.BOTTOM) mStatsDisplay.y = stageHeight - mStatsDisplay.height - 20;	//20
 			else mStatsDisplay.y = int((stageHeight - mStatsDisplay.height) / 2);
 		}
         
